@@ -43,11 +43,15 @@ public class PongMainActivity extends Activity implements View.OnClickListener {
         Button addBallButton= (Button)findViewById(R.id.ballButton);
 
         //create listener for button
+       // Ball ball= new Ball();
         addBallButton.setOnClickListener(this);
 	}
 
     @Override
     public void onClick(View v) {
         //when button is clicked perform action
+        if(v.getId()== R.id.ballButton){
+         //   pong
+        }
     }
 }

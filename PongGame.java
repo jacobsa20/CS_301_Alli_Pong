@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import com.example.jacobsa20.animation.Animator;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -26,18 +27,21 @@ import java.util.Random;
 public class PongGame implements Animator {
 
     // instance variables
-    private boolean backwards = false; // whether clock is ticking backwards
+    private int xnums;
+    private int ynums;
+    private boolean backwardsx = false; // whether clock is ticking backwards
     private boolean backwardsy= false;
     Random rand = new Random();
     int speed= rand.nextInt(15);
     int ballPlaceX= rand.nextInt(880);//places ball anywhere on the top of game
-    private int move = ballPlaceX; // counts the number of logical clock ticks
+    private int movex = ballPlaceX; // counts the number of logical clock ticks
     private int movey= 0;
+
+    ArrayList<Ball>allBalls= new ArrayList<>();
 
     @Override
     public int interval() {
-
-        return speed;
+        return 0;
     }
 
     @Override
@@ -47,7 +51,7 @@ public class PongGame implements Animator {
     }
     public void goBackwards(boolean b) {
         // set the instance variable
-        backwards = b;
+        backwardsx = b;
     }
 
     @Override
@@ -61,45 +65,53 @@ public class PongGame implements Animator {
     }
 
     @Override
-    public void tick(Canvas g) {
+    public void tick(Canvas g){//draws walls, ball, and controls motion of ball
+
+        if(allBalls.isEmpty()){
+            allBalls.add(new Ball(ballPlaceX,0,speed,
+                    rand.nextBoolean(),rand.nextBoolean()));
+        }
 
         int j= rand.nextInt(1000);
         Paint wall= new Paint();
         wall.setColor(Color.WHITE);
-        //I hard coded the sizes of the walls so then I can add buttons later
+        //I hard coded the sizes of the walls because I wanted the game to be
+        //smaller than the height of the screen
         g.drawRect(0f,0f,1770f,10f,wall);
         g.drawRect(0f,0f,10f,1000f,wall);
         g.drawRect(0f,990f,1770f,1000f,wall);
         //paddle
         g.drawRect(1750f,400f,1760f,600f,wall);
+        //changing direction of ball
+        if (backwardsx){movex--;}
+        else {movex++;}
 
-        if (backwards) {move--;}
-        else {move++;}
-
-        if (backwardsy) {movey--;}
+        if (backwardsy){movey--;}
         else {movey++;}
-
-        int xnum = (move*speed);
-        int ynum = (movey*speed);
-        if (xnum < 0) xnum += 1000;
-        if (ynum < 0) ynum += 1000;
-        if (xnum==0){backwards=!backwards;}
-        if (ynum==0 || ynum>= 990){backwardsy=!backwardsy;}
-        if (xnum>=1740){
-            if (ynum>400 && ynum<600){backwards=!backwards;}
-            else {move = j;}
+        xnums = (movex * speed);
+        ynums = (movey * speed);
+        if (xnums < 0) xnums += 1000;
+        if (ynums < 0) ynums += 1000;
+        if (xnums == 0) {
+            backwardsx = !backwardsx;
         }
-        g.drawCircle(xnum, ynum, 15, wall);
+        if (ynums== 0 || ynums>= 990) {
+            backwardsy = !backwardsy;
+        }
+        if (xnums >= 1740) {
+            if (ynums > 400 && ynums < 600) {
+                backwardsx = !backwardsx;
+            } else {
+                movex = j;
+            }
 
-        for(int i=0;i<100;i++){
-
-         //   int xPos=rand.nextInt(xnum);
-          //  int yPos=rand.nextInt(ynum);
-            wall.setColor(Color.rgb(175, 238, 247));
-            g.drawCircle(xnum+(i), ynum+(i), 15, wall);
-            i++;
+        for(Ball i: allBalls){
+            g.drawCircle(i.getxPos(),i.getyPos(), 15, wall);
         }
 
+       // g.drawCircle(xnum, ynum, 15, wall);
+
+        }
     }
 
     @Override
@@ -107,7 +119,7 @@ public class PongGame implements Animator {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            backwards = !backwards;
+            backwardsx = !backwardsx;
         }
 
     }
