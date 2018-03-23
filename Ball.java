@@ -4,6 +4,16 @@ package com.example.jacobsa20.pong;
  * Created by jacobsa20 on 3/22/2018.
  */
 
+import java.util.Random;
+
+/**
+ * EXTERNAL CITATION
+ * Date: 3/22/2018
+ * Problem: needed help changing my ball for loop into a new class.
+ * Solution: Mason and I worked on building a ball class together.
+ */
+
+
 public class Ball {
     private int xPos;
     private int yPos;
@@ -14,7 +24,9 @@ public class Ball {
     private boolean xBackwards;
     private boolean yBackwards;
 
-    public Ball(int newX, int newY, int newSpeed, boolean xBack, boolean yBack){
+    private Random rand = new Random();
+
+    public Ball(int newX,int newY,int newSpeed,boolean xBack,boolean yBack){
         xPos= newX;
         yPos= newY;
         speed= newSpeed;
@@ -23,7 +35,6 @@ public class Ball {
         xBackwards=xBack;
         yBackwards=yBack;
     }
-    Ball[] allBalls = new Ball[10];
 
     //getters for all variables
     public int getxPos(){return xPos;}
@@ -36,7 +47,6 @@ public class Ball {
 
     public void setxPos(int x){xPos=x;}
     public void setyPos(int y){yPos=y;}
-    public void setSpeed(int s){speed=s;}
     public void addxCount(){xCount++;}
     public void addyCount(){yCount++;}
     public void subxCount(){xCount--;}
@@ -47,5 +57,8 @@ public class Ball {
     public void randCount(int x, int y){
         xCount=x;
         yCount=y;
+
+        xBackwards=rand.nextBoolean();
+        yBackwards=rand.nextBoolean();
     }
 }
