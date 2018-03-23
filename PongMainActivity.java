@@ -24,7 +24,7 @@ import com.example.jacobsa20.animation.AnimationSurface;
  * @version July 2013
  * 
  */
-public class PongMainActivity extends Activity implements View.OnClickListener {
+public class PongMainActivity extends Activity {
 
 	/**
 	 * creates an AnimationSurface containing a TestAnimator.
@@ -39,19 +39,5 @@ public class PongMainActivity extends Activity implements View.OnClickListener {
 				.findViewById(R.id.animationSurface);
 		mySurface.setAnimator(new PongGame());
 
-		//finding references to add ball button
-        Button addBallButton= (Button)findViewById(R.id.ballButton);
-
-        //create listener for button
-       // Ball ball= new Ball();
-        addBallButton.setOnClickListener(this);
 	}
-
-    @Override
-    public void onClick(View v) {
-        //when button is clicked perform action
-        if(v.getId()== R.id.ballButton){
-         //   pong
-        }
-    }
 }

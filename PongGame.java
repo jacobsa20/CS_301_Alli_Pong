@@ -33,9 +33,10 @@ public class PongGame implements Animator {
     private boolean backwardsy= false;
     Random rand = new Random();
     int speed= rand.nextInt(15);
-    int ballPlaceX= rand.nextInt(880);//places ball anywhere on the top of game
+    int ballPlaceX=rand.nextInt(880);//places ball anywhere on the top of game
+    int ballPlaceY=rand.nextInt(500);
     private int movex = ballPlaceX; // counts the number of logical clock ticks
-    private int movey= 0;
+    private int movey= ballPlaceY;
 
     ArrayList<Ball>allBalls= new ArrayList<>();
 
@@ -68,11 +69,11 @@ public class PongGame implements Animator {
     public void tick(Canvas g){//draws walls, ball, and controls motion of ball
 
         if(allBalls.isEmpty()){
-            allBalls.add(new Ball(ballPlaceX,0,speed,
+            allBalls.add(new Ball(ballPlaceX,ballPlaceY,speed,
                     rand.nextBoolean(),rand.nextBoolean()));
         }
 
-        int j= rand.nextInt(1000);
+      //  int j= rand.nextInt(1000);
         Paint wall= new Paint();
         wall.setColor(Color.WHITE);
         //I hard coded the sizes of the walls because I wanted the game to be
@@ -101,7 +102,7 @@ public class PongGame implements Animator {
 
         for(Ball i: allBalls){
             int xSpot=(i.getxCount()*i.getSpeed());
-            int ySpot=(i.getyCount()*i.getSpeed())%2000;
+            int ySpot=(i.getyCount()*i.getSpeed());
             i.setxPos(xSpot);
             i.setyPos(ySpot);
 
@@ -111,18 +112,18 @@ public class PongGame implements Animator {
             if(xSpot<10){
                 i.changexBackwards();
             }
-            if(xSpot>=1740){
+            if(xSpot>1740){
                 if(ySpot>400 && ySpot<600){
                     i.changexBackwards();
                 }
-                else{
-                    movex=j;
-                }
+            }
+            if(xSpot>1760){
+                i.randCount(ballPlaceX, ballPlaceY);
             }
         }
 
         for(Ball i: allBalls){
-            g.drawCircle(i.getxPos(), i.getyPos(), 30, wall);
+            g.drawCircle(i.getxPos(), i.getyPos(), 20, wall);
         }
 
     }
@@ -132,11 +133,10 @@ public class PongGame implements Animator {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            allBalls.add(new Ball(ballPlaceX,0,speed,
+            allBalls.add(new Ball(ballPlaceX,ballPlaceY,speed,
                     rand.nextBoolean(),rand.nextBoolean()));
         }
 
     }
-//g.drawCircle(i.getxPos(),i.getyPos(), 15, wall);
 }
 

@@ -40,7 +40,12 @@ public class Ball {
     public void addxCount(){xCount++;}
     public void addyCount(){yCount++;}
     public void subxCount(){xCount--;}
-    public void subyCount(){xCount--;}
+    public void subyCount(){yCount--;}
     public void changexBackwards(){xBackwards = !xBackwards;}
     public void changeyBackwards(){yBackwards = !yBackwards;}
+
+    public void randCount(int x, int y){
+        xCount=x;
+        yCount=y;
+    }
 }
