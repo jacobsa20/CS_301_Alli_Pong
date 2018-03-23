@@ -39,6 +39,8 @@ public class Ball {
     public void setSpeed(int s){speed=s;}
     public void addxCount(){xCount++;}
     public void addyCount(){yCount++;}
+    public void subxCount(){xCount--;}
+    public void subyCount(){xCount--;}
     public void changexBackwards(){xBackwards = !xBackwards;}
-    public void changeBackwards(){yBackwards = !yBackwards;}
+    public void changeyBackwards(){yBackwards = !yBackwards;}
 }

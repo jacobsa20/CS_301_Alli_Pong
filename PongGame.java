@@ -83,35 +83,48 @@ public class PongGame implements Animator {
         //paddle
         g.drawRect(1750f,400f,1760f,600f,wall);
         //changing direction of ball
-        if (backwardsx){movex--;}
-        else {movex++;}
-
-        if (backwardsy){movey--;}
-        else {movey++;}
-        xnums = (movex * speed);
-        ynums = (movey * speed);
-        if (xnums < 0) xnums += 1000;
-        if (ynums < 0) ynums += 1000;
-        if (xnums == 0) {
-            backwardsx = !backwardsx;
-        }
-        if (ynums== 0 || ynums>= 990) {
-            backwardsy = !backwardsy;
-        }
-        if (xnums >= 1740) {
-            if (ynums > 400 && ynums < 600) {
-                backwardsx = !backwardsx;
-            } else {
-                movex = j;
-            }
 
         for(Ball i: allBalls){
-            g.drawCircle(i.getxPos(),i.getyPos(), 15, wall);
+            if(i.isxBackwards()){
+                i.subxCount();
+            }
+            else{
+                i.addxCount();
+            }
+            if(i.isyBackwards()){
+                i.subyCount();
+            }
+            else{
+                i.addyCount();
+            }
         }
 
-       // g.drawCircle(xnum, ynum, 15, wall);
+        for(Ball i: allBalls){
+            int xSpot=(i.getxCount()*i.getSpeed());
+            int ySpot=(i.getyCount()*i.getSpeed())%2000;
+            i.setxPos(xSpot);
+            i.setyPos(ySpot);
 
+            if(ySpot>990 || ySpot<10){
+                i.changeyBackwards();
+            }
+            if(xSpot<10){
+                i.changexBackwards();
+            }
+            if(xSpot>=1740){
+                if(ySpot>400 && ySpot<600){
+                    i.changexBackwards();
+                }
+                else{
+                    movex=j;
+                }
+            }
         }
+
+        for(Ball i: allBalls){
+            g.drawCircle(i.getxPos(), i.getyPos(), 30, wall);
+        }
+
     }
 
     @Override
@@ -119,10 +132,11 @@ public class PongGame implements Animator {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            backwardsx = !backwardsx;
+            allBalls.add(new Ball(ballPlaceX,0,speed,
+                    rand.nextBoolean(),rand.nextBoolean()));
         }
 
     }
-
+//g.drawCircle(i.getxPos(),i.getyPos(), 15, wall);
 }
 
